@@ -18,7 +18,8 @@ import java.util.Arrays;
 import java.net.Socket;
 import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
-import org.csource.common.Base64;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
 * Storage client for 2 fields file id: group name and filename
@@ -63,7 +64,7 @@ public class StorageClient
 		}
 	}
 	
-	public final static Base64 base64 = new Base64('-', '_', '.', 0);
+	public final static Base64 base64 = new Base64(true);
 	protected TrackerServer trackerServer;
 	protected StorageServer storageServer;
 	protected byte errno;
@@ -1792,7 +1793,7 @@ public class StorageClient
 	          return null;
 	  }
 	  
-	  byte[] buff = base64.decodeAuto(remote_filename.substring(ProtoCommon.FDFS_FILE_PATH_LEN, 
+	  byte[] buff = base64.decode(remote_filename.substring(ProtoCommon.FDFS_FILE_PATH_LEN, 
 	  	ProtoCommon.FDFS_FILE_PATH_LEN + ProtoCommon.FDFS_FILENAME_BASE64_LENGTH));
 		
 	  long file_size = ProtoCommon.buff2long(buff, 4 * 2);

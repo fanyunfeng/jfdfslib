@@ -8,4 +8,11 @@
     <groupId>jfdfslib</groupId>
     <artifactId>jfdfslib</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.8</version>
+	    </dependency>
+    </dependencies>
 </project>
