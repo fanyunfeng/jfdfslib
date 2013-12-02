@@ -21,27 +21,32 @@ public class Config {
         InputStream is = null;
         String[] v = resource.split(":");
 
-        if (v.length == 1) {
-            is = new FileInputStream(resource);
-        } else {
-            if (v.length == 2) {
-                String prefix = v[0].toLowerCase();
+        try {
+            if (v.length == 1) {
+                is = new FileInputStream(resource);
+            } else {
+                if (v.length == 2) {
+                    String prefix = v[0].toLowerCase();
 
-                if (prefix.equals("classpath")) {
-                    is = ClassLoader.getSystemResourceAsStream(v[1]);
-                } else {
-                    URL url = new URL(resource);
-                    is = url.openStream();
+                    if (prefix.equals("classpath")) {
+                        is = ClassLoader.getSystemResourceAsStream(v[1]);
+                    } else {
+                        URL url = new URL(resource);
+                        is = url.openStream();
+                    }
                 }
             }
-        }
 
-        if (is != null) {
-            Properties properties = new Properties();
-            properties.load(is);
+            if (is != null) {
+                Properties properties = new Properties();
+                properties.load(is);
 
-            is.close();
-            return properties;
+                return properties;
+            }
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
 
         return null;
@@ -82,7 +87,7 @@ public class Config {
 
     }
 
-    public boolean getBoolValue(String name, boolean def) {
+    public boolean getBooleanValue(String name, boolean def) {
         if (properties == null) {
             return def;
         }

@@ -84,7 +84,7 @@ public class ClientGlobal {
         g_tracker_group = new TrackerGroup(tracker_servers);
 
         g_tracker_http_port = conf.getIntValue("http.tracker_http_port", 80);
-        g_anti_steal_token = conf.getBoolValue("http.anti_steal_token", false);
+        g_anti_steal_token = conf.getBooleanValue("http.anti_steal_token", false);
         if (g_anti_steal_token) {
             g_secret_key = conf.getStringValue("http.secret_key");
         }
