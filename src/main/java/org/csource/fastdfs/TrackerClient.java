@@ -338,7 +338,8 @@ public class TrackerClient {
      * query storage server to download file
      * 
      * @param trackerServer the tracker server
-     * @param cmd command code, ProtoCommon.TRACKER_PROTO_CMD_SERVICE_QUERY_FETCH_ONE or
+     * @param cmd command code,
+     *            ProtoCommon.TRACKER_PROTO_CMD_SERVICE_QUERY_FETCH_ONE or
      *            ProtoCommon.TRACKER_PROTO_CMD_SERVICE_QUERY_UPDATE
      * @param groupName the group name of storage server
      * @param filename filename on storage server

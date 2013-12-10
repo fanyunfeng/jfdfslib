@@ -29,21 +29,22 @@ public class ServerPool<T> {
 
     private ConcurrentHashMap<InetSocketAddress, GenericObjectPool<T>> servers = new ConcurrentHashMap<InetSocketAddress, GenericObjectPool<T>>();
 
-    T borrowObject(InetSocketAddress address) throws Exception {
+    public T borrowObject(InetSocketAddress address) throws Exception {
         GenericObjectPool<T> pool = servers.get(address);
 
         if (pool == null) {
-            //create new factory
+            // create new factory
             PooledServerFactory<T> _factory = factory.clone();
             _factory.setAddress(address);
-            
-            //create pool
+
+            // create pool
             GenericObjectPool<T> _pool = new GenericObjectPool<T>(_factory, config);
 
             synchronized (servers) {
                 pool = servers.get(address);
 
                 if (pool == null) {
+                    pool = _pool;
                     servers.put(address, _pool);
                     _pool = null;
                 }

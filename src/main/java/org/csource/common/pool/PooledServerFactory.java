@@ -2,10 +2,12 @@ package org.csource.common.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
+import org.csource.fastdfs.ProtoCommon;
 
 public abstract class PooledServerFactory<T> implements PooledObjectFactory<T>, Cloneable {
     private InetSocketAddress address;
@@ -28,13 +30,26 @@ public abstract class PooledServerFactory<T> implements PooledObjectFactory<T>, 
     @Override
     public void destroyObject(PooledObject<T> p) throws Exception {
         PooledServer server = (PooledServer) p.getObject();
-        
+
         server.finalClose();
     }
 
     @Override
     public boolean validateObject(PooledObject<T> p) {
-        return true;
+        PooledServer server = (PooledServer) p.getObject();
+
+        Socket sock;
+        try {
+            sock = server.getSocket();
+
+            if (sock.isClosed()) {
+                return false;
+            }
+
+            return ProtoCommon.activeTest(sock);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override
@@ -46,9 +61,9 @@ public abstract class PooledServerFactory<T> implements PooledObjectFactory<T>, 
     public void passivateObject(PooledObject<T> p) throws Exception {
 
     }
-    
+
     @SuppressWarnings("unchecked")
-    public PooledServerFactory<T> clone() throws CloneNotSupportedException{
+    public PooledServerFactory<T> clone() throws CloneNotSupportedException {
         return (PooledServerFactory<T>) super.clone();
     }
 }

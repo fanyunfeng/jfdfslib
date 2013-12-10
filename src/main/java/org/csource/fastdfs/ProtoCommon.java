@@ -71,10 +71,16 @@ public class ProtoCommon {
     public static final byte STORAGE_PROTO_CMD_GET_METADATA = 15;
     public static final byte STORAGE_PROTO_CMD_UPLOAD_SLAVE_FILE = 21;
     public static final byte STORAGE_PROTO_CMD_QUERY_FILE_INFO = 22;
-    public static final byte STORAGE_PROTO_CMD_UPLOAD_APPENDER_FILE = 23; //create appender file
-    public static final byte STORAGE_PROTO_CMD_APPEND_FILE = 24; //append file
-    public static final byte STORAGE_PROTO_CMD_MODIFY_FILE = 34; //modify appender file
-    public static final byte STORAGE_PROTO_CMD_TRUNCATE_FILE = 36; //truncate appender file
+    public static final byte STORAGE_PROTO_CMD_UPLOAD_APPENDER_FILE = 23; // create
+                                                                          // appender
+                                                                          // file
+    public static final byte STORAGE_PROTO_CMD_APPEND_FILE = 24; // append file
+    public static final byte STORAGE_PROTO_CMD_MODIFY_FILE = 34; // modify
+                                                                 // appender
+                                                                 // file
+    public static final byte STORAGE_PROTO_CMD_TRUNCATE_FILE = 36; // truncate
+                                                                   // appender
+                                                                   // file
 
     public static final byte STORAGE_PROTO_CMD_RESP = TRACKER_PROTO_CMD_RESP;
 
@@ -333,7 +339,8 @@ public class ProtoCommon {
     }
 
     /**
-     * send ACTIVE_TEST command to server, test if network is ok and the server is alive
+     * send ACTIVE_TEST command to server, test if network is ok and the server
+     * is alive
      * 
      * @param sock the Socket object
      */
@@ -408,7 +415,7 @@ public class ProtoCommon {
      * @return ip address
      */
     public static String getIpAddress(byte[] bs, int offset) {
-        if (bs[0] == 0 || bs[3] == 0) //storage server ID
+        if (bs[0] == 0 || bs[3] == 0) // storage server ID
         {
             return "";
         }
@@ -474,7 +481,8 @@ public class ProtoCommon {
      * 
      * @param master_filename the master filename to generate the slave filename
      * @param prefix_name the prefix name to generate the slave filename
-     * @param ext_name the extension name of slave filename, null for same as the master extension name
+     * @param ext_name the extension name of slave filename, null for same as
+     *            the master extension name
      * @return slave filename string
      */
     public static String genSlaveFilename(String master_filename, String prefix_name, String ext_name)

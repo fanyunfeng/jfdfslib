@@ -30,7 +30,7 @@ public class TrackerServer {
      * @param sock Socket of server
      * @param inetSockAddr the server info
      */
-    private TrackerServer(Socket sock, InetSocketAddress inetSockAddr) {
+    public TrackerServer(Socket sock, InetSocketAddress inetSockAddr) {
         this.sock = sock;
         this.inetSockAddr = inetSockAddr;
     }

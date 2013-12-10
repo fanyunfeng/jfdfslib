@@ -52,7 +52,8 @@ public class StorageClient {
         }
 
         /**
-         * send file content callback function, be called only once when the file uploaded
+         * send file content callback function, be called only once when the
+         * file uploaded
          * 
          * @param out output stream for writing file content
          * @return 0 success, return none zero(errno) if fail
@@ -101,10 +102,17 @@ public class StorageClient {
      * upload file to storage server (by file name)
      * 
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String local_filename, String file_ext_name, NameValuePair[] meta_list)
             throws IOException, MyException {
@@ -117,10 +125,17 @@ public class StorageClient {
      * 
      * @param group_name the group name to upload file to, can be empty
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     protected String[] upload_file(String group_name, String local_filename, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -134,10 +149,17 @@ public class StorageClient {
      * @param cmd the command
      * @param group_name the group name to upload file to, can be empty
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     protected String[] upload_file(byte cmd, String group_name, String local_filename, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -167,8 +189,14 @@ public class StorageClient {
      * @param length the length of buff to upload
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(byte[] file_buff, int offset, int length, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -185,8 +213,14 @@ public class StorageClient {
      * @param length the length of buff to upload
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, byte[] file_buff, int offset, int length, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -200,8 +234,14 @@ public class StorageClient {
      * @param file_buff file content/buff
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(byte[] file_buff, String file_ext_name, NameValuePair[] meta_list) throws IOException,
             MyException {
@@ -216,8 +256,14 @@ public class StorageClient {
      * @param file_buff file content/buff
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, byte[] file_buff, String file_ext_name, NameValuePair[] meta_list)
             throws IOException, MyException {
@@ -233,8 +279,14 @@ public class StorageClient {
      * @param callback the write data callback object
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, long file_size, UploadCallback callback, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -252,10 +304,17 @@ public class StorageClient {
      * @param master_filename the master file name to generate the slave file
      * @param prefix_name the prefix name to generate the slave file
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, String master_filename, String prefix_name, String local_filename,
             String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -291,8 +350,14 @@ public class StorageClient {
      * @param file_buff file content/buff
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, String master_filename, String prefix_name, byte[] file_buff,
             String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -318,8 +383,14 @@ public class StorageClient {
      * @param length the length of buff to upload
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, String master_filename, String prefix_name, byte[] file_buff,
             int offset, int length, String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -342,8 +413,14 @@ public class StorageClient {
      * @param callback the write data callback object
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_file(String group_name, String master_filename, String prefix_name, long file_size,
             UploadCallback callback, String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -355,10 +432,17 @@ public class StorageClient {
      * upload appender file to storage server (by file name)
      * 
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(String local_filename, String file_ext_name, NameValuePair[] meta_list)
             throws IOException, MyException {
@@ -371,10 +455,17 @@ public class StorageClient {
      * 
      * @param group_name the group name to upload file to, can be empty
      * @param local_filename local filename to upload
-     * @param file_ext_name file ext name, do not include dot(.), null to extract ext name from the local filename
+     * @param file_ext_name file ext name, do not include dot(.), null to
+     *            extract ext name from the local filename
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file </li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     protected String[] upload_appender_file(String group_name, String local_filename, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -390,8 +481,14 @@ public class StorageClient {
      * @param length the length of buff to upload
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(byte[] file_buff, int offset, int length, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -408,8 +505,14 @@ public class StorageClient {
      * @param length the length of buff to upload
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(String group_name, byte[] file_buff, int offset, int length,
             String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -423,8 +526,14 @@ public class StorageClient {
      * @param file_buff file content/buff
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(byte[] file_buff, String file_ext_name, NameValuePair[] meta_list)
             throws IOException, MyException {
@@ -439,8 +548,14 @@ public class StorageClient {
      * @param file_buff file content/buff
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(String group_name, byte[] file_buff, String file_ext_name,
             NameValuePair[] meta_list) throws IOException, MyException {
@@ -456,8 +571,14 @@ public class StorageClient {
      * @param callback the write data callback object
      * @param file_ext_name file ext name, do not include dot(.)
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li>results[0]: the group name to store the file</li></ul>
-     *         <ul><li>results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     public String[] upload_appender_file(String group_name, long file_size, UploadCallback callback,
             String file_ext_name, NameValuePair[] meta_list) throws IOException, MyException {
@@ -611,8 +732,14 @@ public class StorageClient {
      * @param file_size the file size
      * @param callback the write data callback object
      * @param meta_list meta info array
-     * @return 2 elements string array if success:<br> <ul><li> results[0]: the group name to store the file</li></ul>
-     *         <ul><li> results[1]: the new created filename</li></ul> return null if fail
+     * @return 2 elements string array if success:<br>
+     *         <ul>
+     *         <li>results[0]: the group name to store the file</li>
+     *         </ul>
+     *         <ul>
+     *         <li>results[1]: the new created filename</li>
+     *         </ul>
+     *         return null if fail
      */
     protected String[] do_upload_file(byte cmd, String group_name, String master_filename, String prefix_name,
             String file_ext_name, long file_size, UploadCallback callback, NameValuePair[] meta_list)
@@ -1204,7 +1331,7 @@ public class StorageClient {
                 long remainBytes = header.body_len;
                 int bytes;
 
-                //System.out.println("expect_body_len=" + header.body_len);
+                // System.out.println("expect_body_len=" + header.body_len);
 
                 while (remainBytes > 0) {
                     if ((bytes = in.read(buff, 0, remainBytes > buff.length ? buff.length : (int) remainBytes)) < 0) {
@@ -1215,7 +1342,8 @@ public class StorageClient {
                     out.write(buff, 0, bytes);
                     remainBytes -= bytes;
 
-                    //System.out.println("totalBytes=" + (header.body_len - remainBytes));
+                    // System.out.println("totalBytes=" + (header.body_len -
+                    // remainBytes));
                 }
 
                 return 0;
@@ -1302,7 +1430,7 @@ public class StorageClient {
             long remainBytes = header.body_len;
             int bytes;
 
-            //System.out.println("expect_body_len=" + header.body_len);
+            // System.out.println("expect_body_len=" + header.body_len);
 
             while (remainBytes > 0) {
                 if ((bytes = in.read(buff, 0, remainBytes > buff.length ? buff.length : (int) remainBytes)) < 0) {
@@ -1316,7 +1444,8 @@ public class StorageClient {
                 }
 
                 remainBytes -= bytes;
-                //System.out.println("totalBytes=" + (header.body_len - remainBytes));
+                // System.out.println("totalBytes=" + (header.body_len -
+                // remainBytes));
             }
 
             return 0;
@@ -1399,10 +1528,17 @@ public class StorageClient {
      * @param group_name the group name of storage server
      * @param remote_filename filename on storage server
      * @param meta_list meta item array
-     * @param op_flag flag, can be one of following values: <br> <ul><li>
-     *            ProtoCommon.STORAGE_SET_METADATA_FLAG_OVERWRITE: overwrite all old metadata items</li></ul> <ul><li>
-     *            ProtoCommon.STORAGE_SET_METADATA_FLAG_MERGE: merge, insert when the metadata item not exist, otherwise
-     *            update it</li></ul>
+     * @param op_flag flag, can be one of following values: <br>
+     *            <ul>
+     *            <li>
+     *            ProtoCommon.STORAGE_SET_METADATA_FLAG_OVERWRITE: overwrite all
+     *            old metadata items</li>
+     *            </ul>
+     *            <ul>
+     *            <li>
+     *            ProtoCommon.STORAGE_SET_METADATA_FLAG_MERGE: merge, insert
+     *            when the metadata item not exist, otherwise update it</li>
+     *            </ul>
      * @return 0 for success, !=0 fail (error code)
      */
     public int set_metadata(String group_name, String remote_filename, NameValuePair[] meta_list, byte op_flag)
@@ -1492,7 +1628,8 @@ public class StorageClient {
     }
 
     /**
-     * get file info decoded from the filename, fetch from the storage if necessary
+     * get file info decoded from the filename, fetch from the storage if
+     * necessary
      * 
      * @param group_name the group name
      * @param remote_filename the filename
@@ -1510,7 +1647,11 @@ public class StorageClient {
 
         long file_size = ProtoCommon.buff2long(buff, 4 * 2);
         if (((remote_filename.length() > ProtoCommon.TRUNK_LOGIC_FILENAME_LENGTH) || ((remote_filename.length() > ProtoCommon.NORMAL_LOGIC_FILENAME_LENGTH) && ((file_size & ProtoCommon.TRUNK_FILE_MARK_SIZE) == 0)))
-                || ((file_size & ProtoCommon.APPENDER_FILE_SIZE) != 0)) { //slave file or appender file
+                || ((file_size & ProtoCommon.APPENDER_FILE_SIZE) != 0)) { // slave
+                                                                          // file
+                                                                          // or
+                                                                          // appender
+                                                                          // file
             FileInfo fi = this.query_file_info(group_name, remote_filename);
             if (fi == null) {
                 return null;
@@ -1521,7 +1662,7 @@ public class StorageClient {
         FileInfo fileInfo = new FileInfo(file_size, 0, 0, ProtoCommon.getIpAddress(buff, 0));
         fileInfo.setCreateTimestamp(ProtoCommon.buff2int(buff, 4));
         if ((file_size >> 63) != 0) {
-            file_size &= 0xFFFFFFFFL; //low 32 bits is file size
+            file_size &= 0xFFFFFFFFL; // low 32 bits is file size
             fileInfo.setFileSize(file_size);
         }
         fileInfo.setCrc32(ProtoCommon.buff2int(buff, 4 * 4));

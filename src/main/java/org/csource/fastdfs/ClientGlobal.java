@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Properties;
 
 import org.csource.common.Config;
 import org.csource.common.MyException;
@@ -179,11 +178,11 @@ public class ClientGlobal {
         ClientGlobal.g_tracker_group = tracker_group;
     }
 
-    public static void setFactory(DFSServerFactory f){
+    public static void setFactory(DFSServerFactory f) {
         factory = f;
     }
-    
-    public static DFSServerFactory getFactory(){
+
+    public static DFSServerFactory getFactory() {
         return factory;
     }
 }

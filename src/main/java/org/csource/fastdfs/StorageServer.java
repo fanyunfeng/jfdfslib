@@ -27,7 +27,7 @@ public class StorageServer extends TrackerServer {
      * @param port the port of storage server
      * @param store_path the store path index on the storage server
      */
-    private StorageServer(String ip_addr, int port, int store_path) throws IOException {
+    public StorageServer(String ip_addr, int port, int store_path) throws IOException {
         super(ClientGlobal.getSocket(ip_addr, port), new InetSocketAddress(ip_addr, port));
         this.store_path_index = store_path;
     }
@@ -39,7 +39,7 @@ public class StorageServer extends TrackerServer {
      * @param port the port of storage server
      * @param store_path the store path index on the storage server
      */
-    private StorageServer(String ip_addr, int port, byte store_path) throws IOException {
+    public StorageServer(String ip_addr, int port, byte store_path) throws IOException {
         super(ClientGlobal.getSocket(ip_addr, port), new InetSocketAddress(ip_addr, port));
         if (store_path < 0) {
             this.store_path_index = 256 + store_path;
