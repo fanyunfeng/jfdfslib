@@ -28,4 +28,8 @@ public class PooledTrackerServer extends TrackerServer implements PooledServer {
     public <T> void setPool(GenericObjectPool<T> pool) {
         this.pool = (GenericObjectPool<PooledStorageServer>) pool;
     }
+    
+    protected void finalize() throws Throwable {
+        finalClose();
+    }
 }

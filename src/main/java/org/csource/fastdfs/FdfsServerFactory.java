@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class DFSServerFactory {
+public class FdfsServerFactory {
     public StorageServer createStorageServer(String ip, int port, int path) throws IOException {
         return new StorageServer(ip, port, path);
     }

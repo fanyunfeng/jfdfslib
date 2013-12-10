@@ -62,4 +62,12 @@ public class ServerPool<T> {
 
         return ret;
     }
+
+    public void close() {
+        for (GenericObjectPool<T> pool : servers.values()) {
+            pool.close();
+        }
+    }
+    
+    
 }

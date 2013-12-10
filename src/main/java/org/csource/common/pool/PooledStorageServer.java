@@ -2,6 +2,7 @@ package org.csource.common.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.csource.fastdfs.StorageServer;
@@ -30,5 +31,9 @@ public class PooledStorageServer extends StorageServer implements PooledServer {
     @Override
     public <T> void setPool(GenericObjectPool<T> pool) {
         this.pool = (GenericObjectPool<PooledStorageServer>) pool;
+    }
+    
+    protected void finalize() throws Throwable {
+        finalClose();
     }
 }

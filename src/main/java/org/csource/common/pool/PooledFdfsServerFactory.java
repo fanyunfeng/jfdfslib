@@ -5,15 +5,15 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.csource.fastdfs.DFSServerFactory;
+import org.csource.fastdfs.FdfsServerFactory;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerServer;
 
-public class PooledDFSServerFactory extends DFSServerFactory {
+public class PooledFdfsServerFactory extends FdfsServerFactory {
     private ServerPool<PooledTrackerServer> trackerServers = new ServerPool<PooledTrackerServer>();
     private ServerPool<PooledStorageServer> storageServers = new ServerPool<PooledStorageServer>();
 
-    public PooledDFSServerFactory() {
+    public PooledFdfsServerFactory() {
         initTrackerConfig();
         initStorageConfig();
     }
@@ -41,6 +41,8 @@ public class PooledDFSServerFactory extends DFSServerFactory {
         config.setMaxTotal(20);
         config.setLifo(true);
         config.setMaxIdle(2);
+        config.setTestWhileIdle(true);
+        config.setTimeBetweenEvictionRunsMillis(20 * 1000);
 
         storageServers.setConfig(config);
         storageServers.setFactory(new PooledServerFactory<PooledStorageServer>() {
