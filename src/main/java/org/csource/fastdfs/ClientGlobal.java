@@ -35,6 +35,8 @@ public class ClientGlobal {
     public static final int DEFAULT_CONNECT_TIMEOUT = 5; // second
     public static final int DEFAULT_NETWORK_TIMEOUT = 30; // second
 
+    public static DFSServerFactory factory = new DFSServerFactory();
+
     private ClientGlobal() {
     }
 
@@ -175,5 +177,13 @@ public class ClientGlobal {
 
     public static void setG_tracker_group(TrackerGroup tracker_group) {
         ClientGlobal.g_tracker_group = tracker_group;
+    }
+
+    public static void setFactory(DFSServerFactory f){
+        factory = f;
+    }
+    
+    public static DFSServerFactory getFactory(){
+        return factory;
     }
 }
