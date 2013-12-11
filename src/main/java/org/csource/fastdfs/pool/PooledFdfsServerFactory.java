@@ -24,6 +24,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         config.setMaxTotal(20);
         config.setLifo(true);
         config.setMaxIdle(2);
+        config.setTestWhileIdle(true);
+        config.setTimeBetweenEvictionRunsMillis(20 * 1000);
 
         trackerServers.setConfig(config);
         trackerServers.setFactory(new PooledServerFactory<PooledTrackerServer>() {

@@ -35,8 +35,8 @@ public class StorageClient1 extends StorageClient {
      * @param trackerServer the tracker server, can be null
      * @param storageServer the storage server, can be null
      */
-    public StorageClient1(TrackerServer trackerServer, StorageServer storageServer) {
-        super(trackerServer, storageServer);
+    public StorageClient1(StorageServer storageServer) {
+        super(storageServer);
     }
 
     public static byte split_file_id(String file_id, String[] results) {
