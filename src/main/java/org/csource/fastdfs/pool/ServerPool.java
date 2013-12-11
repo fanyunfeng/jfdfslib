@@ -1,4 +1,4 @@
-package org.csource.common.pool;
+package org.csource.fastdfs.pool;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
