@@ -2,7 +2,6 @@ package org.csource.fastdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.csource.fastdfs.StorageServer;

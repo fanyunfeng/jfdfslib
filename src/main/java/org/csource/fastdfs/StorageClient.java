@@ -1111,8 +1111,6 @@ public class StorageClient {
         long remainBytes = header.body_len;
         int bytes;
 
-        // System.out.println("expect_body_len=" + header.body_len);
-
         while (remainBytes > 0) {
             if ((bytes = in.read(buff, 0, remainBytes > buff.length ? buff.length : (int) remainBytes)) < 0) {
                 throw new IOException("recv package size " + (header.body_len - remainBytes) + " != " + header.body_len);
@@ -1124,8 +1122,6 @@ public class StorageClient {
             }
 
             remainBytes -= bytes;
-            // System.out.println("totalBytes=" + (header.body_len -
-            // remainBytes));
         }
 
         return 0;

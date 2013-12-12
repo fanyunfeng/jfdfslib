@@ -11,6 +11,8 @@ package org.csource.fastdfs.test;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.csource.common.*;
 import org.csource.fastdfs.*;
 
@@ -21,7 +23,7 @@ import org.csource.fastdfs.*;
  * @version Version 1.11
  */
 public class TestLoad {
-    public static java.util.concurrent.ConcurrentLinkedQueue file_ids;
+    public static ConcurrentLinkedQueue file_ids;
     public static int total_download_count = 0;
     public static int success_download_count = 0;
     public static int fail_download_count = 0;
@@ -55,8 +57,8 @@ public class TestLoad {
         public TrackerServer trackerServer;
 
         public Uploader() throws Exception {
-            this.tracker = new TrackerClient();
-            this.trackerServer = tracker.getConnection();
+            this.trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+            this.tracker = new TrackerClient(trackerServer);
         }
 
         public int uploadFile() throws Exception {
@@ -96,8 +98,8 @@ public class TestLoad {
         public DownloadFileDiscard callback;
 
         public Downloader() throws Exception {
-            this.tracker = new TrackerClient();
-            this.trackerServer = tracker.getConnection();
+            this.trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+            this.tracker = new TrackerClient(trackerServer);
             this.callback = new DownloadFileDiscard();
         }
 
@@ -235,6 +237,7 @@ public class TestLoad {
      * 
      * @param args comand arguments <ul><li>args[0]: config filename</li></ul>
      */
+    @SuppressWarnings("rawtypes")
     public static void main(String args[]) {
         if (args.length < 1) {
             System.out.println("Error: Must have 1 parameter: config filename");
@@ -248,7 +251,7 @@ public class TestLoad {
             System.out.println("network_timeout=" + ClientGlobal.g_network_timeout + "ms");
             System.out.println("charset=" + ClientGlobal.g_charset);
 
-            file_ids = new java.util.concurrent.ConcurrentLinkedQueue();
+            file_ids = new ConcurrentLinkedQueue();
 
             for (int i = 0; i < 10; i++) {
                 (new UploadThread(i)).start();

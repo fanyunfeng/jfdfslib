@@ -34,7 +34,9 @@ public class ClientGlobal {
     public static final int DEFAULT_CONNECT_TIMEOUT = 5; // second
     public static final int DEFAULT_NETWORK_TIMEOUT = 30; // second
 
-    public static FdfsServerFactory factory = new FdfsServerFactory();
+    private static FdfsServerFactory factory = new FdfsServerFactory();
+    
+    private static Config config = null;
 
     private ClientGlobal() {
     }
@@ -45,29 +47,29 @@ public class ClientGlobal {
      * @param resource config filename
      */
     public static void init(String resource) throws FileNotFoundException, IOException, MyException {
-        Config conf = new Config(resource);
+        ClientGlobal.config = new Config(resource);
 
         String[] szTrackerServers;
         String[] parts;
 
-        g_connect_timeout = conf.getIntValue("connect_timeout", DEFAULT_CONNECT_TIMEOUT);
+        g_connect_timeout = config.getIntValue("connect_timeout", DEFAULT_CONNECT_TIMEOUT);
         if (g_connect_timeout < 0) {
             g_connect_timeout = DEFAULT_CONNECT_TIMEOUT;
         }
         g_connect_timeout *= 1000; // millisecond
 
-        g_network_timeout = conf.getIntValue("network_timeout", DEFAULT_NETWORK_TIMEOUT);
+        g_network_timeout = config.getIntValue("network_timeout", DEFAULT_NETWORK_TIMEOUT);
         if (g_network_timeout < 0) {
             g_network_timeout = DEFAULT_NETWORK_TIMEOUT;
         }
         g_network_timeout *= 1000; // millisecond
 
-        g_charset = conf.getStringValue("charset");
+        g_charset = config.getStringValue("charset");
         if (g_charset == null || g_charset.length() == 0) {
             g_charset = "ISO8859-1";
         }
 
-        szTrackerServers = conf.getStringValue("tracker_server").split(";");
+        szTrackerServers = config.getStringValue("tracker_server").split(";");
         if (szTrackerServers == null) {
             throw new MyException("item \"tracker_server\" in " + resource + " not found");
         }
@@ -84,10 +86,10 @@ public class ClientGlobal {
         }
         g_tracker_group = new TrackerGroup(tracker_servers);
 
-        g_tracker_http_port = conf.getIntValue("http.tracker_http_port", 80);
-        g_anti_steal_token = conf.getBooleanValue("http.anti_steal_token", false);
+        g_tracker_http_port = config.getIntValue("http.tracker_http_port", 80);
+        g_anti_steal_token = config.getBooleanValue("http.anti_steal_token", false);
         if (g_anti_steal_token) {
-            g_secret_key = conf.getStringValue("http.secret_key");
+            g_secret_key = config.getStringValue("http.secret_key");
         }
     }
 
@@ -184,5 +186,13 @@ public class ClientGlobal {
 
     public static FdfsServerFactory getFactory() {
         return factory;
+    }
+
+    public static TrackerGroup getTrackerGroup() throws IOException {
+        return g_tracker_group;
+    }
+    
+    public static Config getConfig(){
+        return config;
     }
 }

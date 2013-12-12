@@ -19,15 +19,16 @@ public class Test1 {
 
             TrackerGroup tg = new TrackerGroup(
                     new InetSocketAddress[] { new InetSocketAddress("192.168.0.196", 22122) });
-            TrackerClient tc = new TrackerClient(tg);
 
-            TrackerServer ts = tc.getConnection();
+            TrackerServer ts = tg.getTrackerServer();
+
             if (ts == null) {
                 System.out.println("getConnection return null");
                 return;
             }
 
-            StorageServer ss = tc.getStoreStorage(ts);
+            TrackerClient tc = new TrackerClient(ts);
+            StorageServer ss = tc.getStoreStorage();
             if (ss == null) {
                 System.out.println("getStoreStorage return null");
             }
@@ -39,7 +40,10 @@ public class Test1 {
             String fileid = sc1.upload_file1(item, "exe", meta_list);
 
             System.out.println("Upload local file " + item + " ok, fileid=" + fileid);
-        } catch (Exception ex) {
+            
+            ts.close();
+            ss.close();        
+            } catch (Exception ex) {
             ex.printStackTrace();
         }
 

@@ -45,12 +45,14 @@ public class Test {
 
         try {
             ClientGlobal.init(conf_filename);
+            
             System.out.println("network_timeout=" + ClientGlobal.g_network_timeout + "ms");
             System.out.println("charset=" + ClientGlobal.g_charset);
+            
+            TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+            TrackerClient tracker = new TrackerClient(trackerServer);
 
-            TrackerClient tracker = new TrackerClient();
-            TrackerServer trackerServer = tracker.getConnection();
-            StorageServer storageServer = null;
+            StorageServer storageServer = tracker.getStoreStorage();
             StorageClient1 client = new StorageClient1(storageServer);
 
             NameValuePair[] metaList = new NameValuePair[1];
@@ -65,6 +67,7 @@ public class Test {
             }
 
             trackerServer.close();
+            storageServer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

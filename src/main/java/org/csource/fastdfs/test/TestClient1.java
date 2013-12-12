@@ -50,8 +50,9 @@ public class TestClient1 {
 
             String file_id;
 
-            TrackerClient tracker = new TrackerClient();
-            TrackerServer trackerServer = tracker.getConnection();
+            TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+
+            TrackerClient tracker = new TrackerClient(trackerServer);
 
             StorageServer storageServer = null;
             /*
@@ -73,7 +74,7 @@ public class TestClient1 {
             int errno;
 
             group_name = "group1";
-            StorageServer[] storageServers = tracker.getStoreStorages(trackerServer, group_name);
+            StorageServer[] storageServers = tracker.getStoreStorages(group_name);
             if (storageServers == null) {
                 System.err.println("get store storage servers fail, error code: " + tracker.getErrorCode());
             } else {
@@ -107,7 +108,7 @@ public class TestClient1 {
                 System.err.println("file_id: " + file_id);
                 System.err.println(client.get_file_info1(file_id));
 
-                ServerInfo[] servers = tracker.getFetchStorages1(trackerServer, file_id);
+                ServerInfo[] servers = tracker.getFetchStorages1(file_id);
                 if (servers == null) {
                     System.err.println("get storage servers fail, error code: " + tracker.getErrorCode());
                 } else {
@@ -252,7 +253,7 @@ public class TestClient1 {
                 System.err.println("Upload file fail, error no: " + errno);
             }
 
-            storageServer = tracker.getFetchStorage1(trackerServer, file_id);
+            storageServer = tracker.getFetchStorage1(file_id);
             if (storageServer == null) {
                 System.out.println("getFetchStorage fail, errno code: " + tracker.getErrorCode());
                 return;

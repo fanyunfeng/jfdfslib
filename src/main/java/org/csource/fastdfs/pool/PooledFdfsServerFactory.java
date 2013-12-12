@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.csource.common.Config;
 import org.csource.fastdfs.FdfsServerFactory;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerServer;
@@ -13,21 +14,21 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     private ServerPool<PooledTrackerServer> trackerServers = new ServerPool<PooledTrackerServer>();
     private ServerPool<PooledStorageServer> storageServers = new ServerPool<PooledStorageServer>();
 
-    public PooledFdfsServerFactory() {
-        initTrackerConfig();
-        initStorageConfig();
+    public PooledFdfsServerFactory(Config config) {
+        initTrackerConfig(config);
+        initStorageConfig(config);
     }
 
-    private void initTrackerConfig() {
-        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+    private void initTrackerConfig(Config config) {
+        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 
-        config.setMaxTotal(20);
-        config.setLifo(true);
-        config.setMaxIdle(2);
-        config.setTestWhileIdle(true);
-        config.setTimeBetweenEvictionRunsMillis(20 * 1000);
+        poolConfig.setMaxTotal(20);
+        poolConfig.setLifo(true);
+        poolConfig.setMaxIdle(2);
+        poolConfig.setTestWhileIdle(true);
+        poolConfig.setTimeBetweenEvictionRunsMillis(20 * 1000);
 
-        trackerServers.setConfig(config);
+        trackerServers.setConfig(poolConfig);
         trackerServers.setFactory(new PooledServerFactory<PooledTrackerServer>() {
 
             @Override
@@ -37,16 +38,16 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         });
     }
 
-    private void initStorageConfig() {
-        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+    private void initStorageConfig(Config config) {
+        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 
-        config.setMaxTotal(20);
-        config.setLifo(true);
-        config.setMaxIdle(2);
-        config.setTestWhileIdle(true);
-        config.setTimeBetweenEvictionRunsMillis(20 * 1000);
+        poolConfig.setMaxTotal(20);
+        poolConfig.setLifo(true);
+        poolConfig.setMaxIdle(2);
+        poolConfig.setTestWhileIdle(true);
+        poolConfig.setTimeBetweenEvictionRunsMillis(20 * 1000);
 
-        storageServers.setConfig(config);
+        storageServers.setConfig(poolConfig);
         storageServers.setFactory(new PooledServerFactory<PooledStorageServer>() {
 
             @Override

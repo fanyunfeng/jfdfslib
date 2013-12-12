@@ -51,8 +51,9 @@ public class TestClient {
             String group_name;
             String remote_filename;
             ServerInfo[] servers;
-            TrackerClient tracker = new TrackerClient();
-            TrackerServer trackerServer = tracker.getConnection();
+            TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+
+            TrackerClient tracker = new TrackerClient(trackerServer);
 
             StorageServer storageServer = null;
 
@@ -85,7 +86,7 @@ public class TestClient {
             System.out.println("file length: " + file_buff.length);
 
             group_name = null;
-            StorageServer[] storageServers = tracker.getStoreStorages(trackerServer, group_name);
+            StorageServer[] storageServers = tracker.getStoreStorages(group_name);
             if (storageServers == null) {
                 System.err.println("get store storage servers fail, error code: " + tracker.getErrorCode());
             } else {
@@ -115,7 +116,7 @@ public class TestClient {
                 System.err.println("group_name: " + group_name + ", remote_filename: " + remote_filename);
                 System.err.println(client.get_file_info(group_name, remote_filename));
 
-                servers = tracker.getFetchStorages(trackerServer, group_name, remote_filename);
+                servers = tracker.getFetchStorages(group_name, remote_filename);
                 if (servers == null) {
                     System.err.println("get storage servers fail, error code: " + tracker.getErrorCode());
                 } else {
@@ -295,7 +296,7 @@ public class TestClient {
                 System.err.println("Upload file fail, error no: " + errno);
             }
 
-            storageServer = tracker.getFetchStorage(trackerServer, group_name, remote_filename);
+            storageServer = tracker.getFetchStorage(group_name, remote_filename);
             if (storageServer == null) {
                 System.out.println("getFetchStorage fail, errno code: " + tracker.getErrorCode());
                 return;

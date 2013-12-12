@@ -45,20 +45,17 @@ public class Monitor {
             System.out.println("network_timeout=" + ClientGlobal.g_network_timeout + "ms");
             System.out.println("charset=" + ClientGlobal.g_charset);
 
-            TrackerClient tracker = new TrackerClient();
+            TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+
+            TrackerClient tracker = new TrackerClient(trackerServer);
 
             /*
             System.out.println("delete storage return: " + tracker.deleteStorage("group1", "192.168.0.192"));
             System.out.println("delete storage errno: " + tracker.getErrorCode());
             */
 
-            TrackerServer trackerServer = tracker.getConnection();
-            if (trackerServer == null) {
-                return;
-            }
-
             int count;
-            StructGroupStat[] groupStats = tracker.listGroups(trackerServer);
+            StructGroupStat[] groupStats = tracker.listGroups();
             if (groupStats == null) {
                 System.out.println("");
                 System.out.println("ERROR! list groups error, error no: " + tracker.getErrorCode());
@@ -85,7 +82,7 @@ public class Monitor {
                 System.out.println("current write server index = " + groupStat.getCurrentWriteServer());
                 System.out.println("current trunk file id = " + groupStat.getCurrentTrunkFileId());
 
-                StructStorageStat[] storageStats = tracker.listStorages(trackerServer, groupStat.getGroupName());
+                StructStorageStat[] storageStats = tracker.listStorages(groupStat.getGroupName());
                 if (storageStats == null) {
                     System.out.println("");
                     System.out.println("ERROR! list storage error, error no: " + tracker.getErrorCode());
@@ -161,8 +158,6 @@ public class Monitor {
                             + getSyncedDelayString(storageStats, storageStat));
                 }
             }
-
-            trackerServer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
