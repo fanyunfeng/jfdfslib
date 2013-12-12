@@ -29,10 +29,11 @@ public class TrackerServer {
      * 
      * @param sock Socket of server
      * @param inetSockAddr the server info
+     * @throws IOException 
      */
-    public TrackerServer(Socket sock, InetSocketAddress inetSockAddr) {
-        this.sock = sock;
+    public TrackerServer(InetSocketAddress inetSockAddr) throws IOException {
         this.inetSockAddr = inetSockAddr;
+        this.sock = ClientGlobal.getSocket(inetSockAddr);
     }
 
     /**

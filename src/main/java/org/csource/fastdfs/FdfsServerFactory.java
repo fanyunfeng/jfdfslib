@@ -2,7 +2,6 @@ package org.csource.fastdfs;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 public class FdfsServerFactory {
     public StorageServer createStorageServer(String ip, int port, int path) throws IOException {
@@ -13,7 +12,15 @@ public class FdfsServerFactory {
         return new StorageServer(ip, port, path);
     }
 
-    public TrackerServer createTrackerServer(Socket socket, InetSocketAddress inetSockAddr) {
-        return new TrackerServer(socket, inetSockAddr);
+    public TrackerServer createTrackerServer(InetSocketAddress inetSockAddr) throws IOException {
+        return new TrackerServer(inetSockAddr);
+    }
+    
+    public void close(){
+        
+    }
+    
+    protected void finalize() throws Throwable {
+        close();
     }
 }

@@ -9,6 +9,87 @@ import org.csource.fastdfs.TrackerServer;
 import org.csource.fastdfs.pool.PooledFdfsServerFactory;
 
 public class PooledTest {
+    private static void testWithPool(String config, String file, int times) {
+        long start = 0;
+
+        try {
+            ClientGlobal.init(config);
+            ClientGlobal.setFactory(new PooledFdfsServerFactory(ClientGlobal.getConfig()));
+
+            start = System.currentTimeMillis();
+            // System.out.println("network_timeout=" +
+            // ClientGlobal.g_network_timeout + "ms");
+            // System.out.println("charset=" + ClientGlobal.g_charset);
+
+            for (int c = 0; c < times; c++) {
+                TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+                TrackerClient tracker = new TrackerClient(trackerServer);
+
+                StorageServer storageServer = tracker.getStoreStorage();
+                StorageClient1 client = new StorageClient1(storageServer);
+
+                NameValuePair[] metaList = new NameValuePair[1];
+                metaList[0] = new NameValuePair("fileName", file);
+                String fileId = client.upload_file1(file, null, metaList);
+                //System.out.println("upload success. file id is: " + fileId);
+
+                byte[] result = client.download_file1(fileId);
+                //System.out.println("download result is: " + result.length);
+
+                trackerServer.close();
+                storageServer.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        long end = System.currentTimeMillis();
+
+        ClientGlobal.getFactory().close();
+
+        System.out.println("consume with pool:" + (end - start));
+    }
+
+    private static void testWithoutPool(String config, String file, int times) {
+        long start = 0;
+
+        try {
+            ClientGlobal.init(config);
+            // ClientGlobal.setFactory(new
+            // PooledFdfsServerFactory(ClientGlobal.getConfig()));
+
+            // System.out.println("network_timeout=" +
+            // ClientGlobal.g_network_timeout + "ms");
+            // System.out.println("charset=" + ClientGlobal.g_charset);
+
+            start = System.currentTimeMillis();
+
+            for (int c = 0; c < times; c++) {
+                TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+                TrackerClient tracker = new TrackerClient(trackerServer);
+
+                StorageServer storageServer = tracker.getStoreStorage();
+                StorageClient1 client = new StorageClient1(storageServer);
+
+                NameValuePair[] metaList = new NameValuePair[1];
+                metaList[0] = new NameValuePair("fileName", file);
+                String fileId = client.upload_file1(file, null, metaList);
+                //System.out.println("upload success. file id is: " + fileId);
+
+                byte[] result = client.download_file1(fileId);
+                //System.out.println("download result is: " + result.length);
+
+                trackerServer.close();
+                storageServer.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("consume without pool:" + (end - start));
+    }
 
     public static void main(String args[]) {
         if (args.length < 2) {
@@ -19,39 +100,11 @@ public class PooledTest {
 
         System.out.println("java.version=" + System.getProperty("java.version"));
 
-        String conf_filename = args[0];
-        String local_filename = args[1];
+        String config = args[0];
+        String file = args[1];
 
-        for (int c = 0; c < 10; c++) {
-            try {
-                ClientGlobal.init(conf_filename);
-                ClientGlobal.setFactory(new PooledFdfsServerFactory(null));
+        testWithoutPool(config, file, 20);
 
-                System.out.println("network_timeout=" + ClientGlobal.g_network_timeout + "ms");
-                System.out.println("charset=" + ClientGlobal.g_charset);
-
-                TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
-                TrackerClient tracker = new TrackerClient(trackerServer);
-
-                StorageServer storageServer = tracker.getStoreStorage();
-                StorageClient1 client = new StorageClient1(storageServer);
-
-                NameValuePair[] metaList = new NameValuePair[1];
-                metaList[0] = new NameValuePair("fileName", local_filename);
-                String fileId = client.upload_file1(local_filename, null, metaList);
-                System.out.println("upload success. file id is: " + fileId);
-
-                int i = 0;
-                while (i++ < 10) {
-                    byte[] result = client.download_file1(fileId);
-                    System.out.println(i + ", download result is: " + result.length);
-                }
-
-                trackerServer.close();
-                storageServer.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        testWithPool(config, file, 20);
     }
 }

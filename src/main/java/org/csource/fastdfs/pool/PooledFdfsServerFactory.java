@@ -37,8 +37,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         trackerServers.setFactory(new PooledServerFactory<PooledTrackerServer>() {
 
             @Override
-            public PooledTrackerServer create() {
-                return new PooledTrackerServer(null, this.getAddress());
+            public PooledTrackerServer create() throws IOException {
+                return new PooledTrackerServer(this.getAddress());
             }
         });
     }
@@ -93,15 +93,20 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         }
     }
 
-    public TrackerServer createTrackerServer(Socket socket, InetSocketAddress address) {
+    public TrackerServer createTrackerServer(InetSocketAddress address) {
         try {
-            StorageServer server;
+            TrackerServer server;
 
-            server = storageServers.borrowObject(address);
+            server = trackerServers.borrowObject(address);
 
             return server;
         } catch (Exception e) {
             throw new PoolException(e);
         }
+    }
+    
+    public void close(){
+        trackerServers.close();
+        storageServers.close();
     }
 }
