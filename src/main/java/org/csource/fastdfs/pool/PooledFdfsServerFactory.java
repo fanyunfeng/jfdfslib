@@ -22,11 +22,16 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     private void initTrackerConfig(Config config) {
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 
-        poolConfig.setMaxTotal(20);
-        poolConfig.setLifo(true);
-        poolConfig.setMaxIdle(2);
-        poolConfig.setTestWhileIdle(true);
-        poolConfig.setTimeBetweenEvictionRunsMillis(20 * 1000);
+        poolConfig.setMaxTotal(config.getIntValue("pool.tracker.maxTotal", 10));
+        poolConfig.setLifo(config.getBooleanValue("pool.tracker.lifo", true));
+        poolConfig.setMinIdle(config.getIntValue("pool.tracker.minIdle", 0));
+        poolConfig.setMaxIdle(config.getIntValue("pool.tracker.maxIdle", 4));
+        poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
+        poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.minEvictableIdleTimeMillis",
+                5 * 60 * 1000));
+        poolConfig.setTestWhileIdle(config.getBooleanValue("pool.tracker.testWhileIdle", true));
+        poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis",
+                20 * 1000));
 
         trackerServers.setConfig(poolConfig);
         trackerServers.setFactory(new PooledServerFactory<PooledTrackerServer>() {
@@ -41,11 +46,16 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     private void initStorageConfig(Config config) {
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
 
-        poolConfig.setMaxTotal(20);
-        poolConfig.setLifo(true);
-        poolConfig.setMaxIdle(2);
-        poolConfig.setTestWhileIdle(true);
-        poolConfig.setTimeBetweenEvictionRunsMillis(20 * 1000);
+        poolConfig.setMaxTotal(config.getIntValue("pool.storage.maxTotal", 20));
+        poolConfig.setLifo(config.getBooleanValue("pool.storage.lifo", true));
+        poolConfig.setMinIdle(config.getIntValue("pool.storage.minIdle", 0));
+        poolConfig.setMaxIdle(config.getIntValue("pool.storage.maxIdle", 2));
+        poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
+        poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.minEvictableIdleTimeMillis",
+                5 * 60 * 1000));
+        poolConfig.setTestWhileIdle(config.getBooleanValue("pool.storage.testWhileIdle", true));
+        poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.storage.timeBetweenEvictionRunsMillis",
+                20 * 1000));
 
         storageServers.setConfig(poolConfig);
         storageServers.setFactory(new PooledServerFactory<PooledStorageServer>() {
