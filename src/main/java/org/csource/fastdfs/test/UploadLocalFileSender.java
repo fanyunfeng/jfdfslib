@@ -8,10 +8,11 @@
 
 package org.csource.fastdfs.test;
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
-import org.csource.fastdfs.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.csource.fastdfs.UploadCallback;
 
 /**
  * upload file callback class, local file sender

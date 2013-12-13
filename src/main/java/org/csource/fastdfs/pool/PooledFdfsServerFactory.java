@@ -2,7 +2,6 @@ package org.csource.fastdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.csource.common.Config;
@@ -28,7 +27,7 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setMaxIdle(config.getIntValue("pool.tracker.maxIdle", 4));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.minEvictableIdleTimeMillis",
-                5 * 60 * 1000));
+                60 * 1000));
         poolConfig.setTestWhileIdle(config.getBooleanValue("pool.tracker.testWhileIdle", true));
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis",
                 20 * 1000));
@@ -52,7 +51,7 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setMaxIdle(config.getIntValue("pool.storage.maxIdle", 2));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.minEvictableIdleTimeMillis",
-                5 * 60 * 1000));
+                60 * 1000));
         poolConfig.setTestWhileIdle(config.getBooleanValue("pool.storage.testWhileIdle", true));
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.storage.timeBetweenEvictionRunsMillis",
                 20 * 1000));
@@ -104,8 +103,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             throw new PoolException(e);
         }
     }
-    
-    public void close(){
+
+    public void close() {
         trackerServers.close();
         storageServers.close();
     }

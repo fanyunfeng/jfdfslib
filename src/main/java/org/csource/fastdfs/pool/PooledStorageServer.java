@@ -9,12 +9,12 @@ import org.csource.fastdfs.StorageServer;
 public class PooledStorageServer extends StorageServer implements PooledServer {
     GenericObjectPool<PooledStorageServer> pool;
 
-    public PooledStorageServer(String ip_addr, int port, byte store_path) throws IOException {
-        super(ip_addr, port, store_path);
+    public PooledStorageServer(InetSocketAddress address, byte store_path) throws IOException {
+        super(address, store_path);
     }
 
     public PooledStorageServer(InetSocketAddress address, int store_path) throws IOException {
-        super(address.getHostName(), address.getPort(), store_path);
+        super(address, store_path);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PooledStorageServer extends StorageServer implements PooledServer {
     public <T> void setPool(GenericObjectPool<T> pool) {
         this.pool = (GenericObjectPool<PooledStorageServer>) pool;
     }
-    
+
     protected void finalize() throws Throwable {
         finalClose();
     }

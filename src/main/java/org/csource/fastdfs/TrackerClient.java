@@ -11,6 +11,7 @@ package org.csource.fastdfs;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -60,7 +61,7 @@ public class TrackerClient {
      */
     public StorageServer getStoreStorage(String groupName) throws IOException {
         byte[] header;
-        String ip_addr;
+        String ip;
         int port;
         byte cmd;
         int out_len;
@@ -105,14 +106,13 @@ public class TrackerClient {
             return null;
         }
 
-        ip_addr = new String(pkgInfo.body, ProtoCommon.FDFS_GROUP_NAME_MAX_LEN, ProtoCommon.FDFS_IPADDR_SIZE - 1)
-                .trim();
+        ip = new String(pkgInfo.body, ProtoCommon.FDFS_GROUP_NAME_MAX_LEN, ProtoCommon.FDFS_IPADDR_SIZE - 1).trim();
 
         port = (int) ProtoCommon.buff2long(pkgInfo.body, ProtoCommon.FDFS_GROUP_NAME_MAX_LEN
                 + ProtoCommon.FDFS_IPADDR_SIZE - 1);
         store_path = pkgInfo.body[ProtoCommon.TRACKER_QUERY_STORAGE_STORE_BODY_LEN - 1];
 
-        return ClientGlobal.getFactory().createStorageServer(ip_addr, port, store_path);
+        return ClientGlobal.getFactory().createStorageServer(new InetSocketAddress(ip, port), store_path);
     }
 
     /**
@@ -124,7 +124,7 @@ public class TrackerClient {
      */
     public StorageServer[] getStoreStorages(String groupName) throws IOException {
         byte[] header;
-        String ip_addr;
+        String ip;
         int port;
         byte cmd;
         int out_len;
@@ -192,13 +192,13 @@ public class TrackerClient {
         int offset = ProtoCommon.FDFS_GROUP_NAME_MAX_LEN;
 
         for (int i = 0; i < serverCount; i++) {
-            ip_addr = new String(pkgInfo.body, offset, ProtoCommon.FDFS_IPADDR_SIZE - 1).trim();
+            ip = new String(pkgInfo.body, offset, ProtoCommon.FDFS_IPADDR_SIZE - 1).trim();
             offset += ProtoCommon.FDFS_IPADDR_SIZE - 1;
 
             port = (int) ProtoCommon.buff2long(pkgInfo.body, offset);
             offset += ProtoCommon.FDFS_PROTO_PKG_LEN_SIZE;
 
-            results[i] = ClientGlobal.getFactory().createStorageServer(ip_addr, port, store_path);
+            results[i] = ClientGlobal.getFactory().createStorageServer(new InetSocketAddress(ip, port), store_path);
         }
 
         return results;
@@ -218,7 +218,8 @@ public class TrackerClient {
         if (servers == null) {
             return null;
         } else {
-            return ClientGlobal.getFactory().createStorageServer(servers[0].getIpAddr(), servers[0].getPort(), 0);
+            return ClientGlobal.getFactory().createStorageServer(
+                    new InetSocketAddress(servers[0].getIpAddr(), servers[0].getPort()), 0);
         }
     }
 
@@ -236,7 +237,8 @@ public class TrackerClient {
         if (servers == null) {
             return null;
         } else {
-            return ClientGlobal.getFactory().createStorageServer(servers[0].getIpAddr(), servers[0].getPort(), 0);
+            return ClientGlobal.getFactory().createStorageServer(
+                    new InetSocketAddress(servers[0].getIpAddr(), servers[0].getPort()), 0);
         }
     }
 
@@ -414,8 +416,7 @@ public class TrackerClient {
      * @return storage server stat array, return null if fail
      * @throws Exception
      */
-    public StructStorageStat[] listStorages(String groupName, String storageIpAddr)
-            throws Exception {
+    public StructStorageStat[] listStorages(String groupName, String storageIpAddr) throws Exception {
         byte[] header;
         byte[] bGroupName;
         byte[] bs;
@@ -479,8 +480,7 @@ public class TrackerClient {
      * @param storageIpAddr the storage server ip address
      * @return true for success, false for fail
      */
-    public boolean deleteStorage(String groupName, String storageIpAddr)
-            throws IOException {
+    public boolean deleteStorage(String groupName, String storageIpAddr) throws IOException {
         byte[] header;
         byte[] bGroupName;
         byte[] bs;

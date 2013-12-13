@@ -13,10 +13,11 @@ public class PooledTest {
         long start = 0;
 
         try {
+            start = System.currentTimeMillis();
+
             ClientGlobal.init(config);
             ClientGlobal.setFactory(new PooledFdfsServerFactory(ClientGlobal.getConfig()));
 
-            start = System.currentTimeMillis();
             // System.out.println("network_timeout=" +
             // ClientGlobal.g_network_timeout + "ms");
             // System.out.println("charset=" + ClientGlobal.g_charset);
@@ -31,10 +32,10 @@ public class PooledTest {
                 NameValuePair[] metaList = new NameValuePair[1];
                 metaList[0] = new NameValuePair("fileName", file);
                 String fileId = client.upload_file1(file, null, metaList);
-                //System.out.println("upload success. file id is: " + fileId);
+                System.out.println("upload success. file id is: " + fileId);
 
                 byte[] result = client.download_file1(fileId);
-                //System.out.println("download result is: " + result.length);
+                System.out.println("download result is: " + result.length);
 
                 trackerServer.close();
                 storageServer.close();
@@ -54,15 +55,8 @@ public class PooledTest {
         long start = 0;
 
         try {
-            ClientGlobal.init(config);
-            // ClientGlobal.setFactory(new
-            // PooledFdfsServerFactory(ClientGlobal.getConfig()));
-
-            // System.out.println("network_timeout=" +
-            // ClientGlobal.g_network_timeout + "ms");
-            // System.out.println("charset=" + ClientGlobal.g_charset);
-
             start = System.currentTimeMillis();
+            ClientGlobal.init(config);
 
             for (int c = 0; c < times; c++) {
                 TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
@@ -74,10 +68,10 @@ public class PooledTest {
                 NameValuePair[] metaList = new NameValuePair[1];
                 metaList[0] = new NameValuePair("fileName", file);
                 String fileId = client.upload_file1(file, null, metaList);
-                //System.out.println("upload success. file id is: " + fileId);
+                System.out.println("upload success. file id is: " + fileId);
 
                 byte[] result = client.download_file1(fileId);
-                //System.out.println("download result is: " + result.length);
+                System.out.println("download result is: " + result.length);
 
                 trackerServer.close();
                 storageServer.close();
@@ -103,8 +97,8 @@ public class PooledTest {
         String config = args[0];
         String file = args[1];
 
-        testWithoutPool(config, file, 20);
+        testWithoutPool(config, file, 200);
 
-        testWithPool(config, file, 20);
+        testWithPool(config, file, 200);
     }
 }

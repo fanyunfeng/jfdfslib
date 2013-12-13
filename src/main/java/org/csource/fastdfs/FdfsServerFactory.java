@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class FdfsServerFactory {
-    public StorageServer createStorageServer(String ip, int port, int path) throws IOException {
-        return new StorageServer(ip, port, path);
+    public StorageServer createStorageServer(InetSocketAddress addr, int path) throws IOException {
+        return new StorageServer(addr, path);
     }
 
-    public StorageServer createStorageServer(String ip, int port, byte path) throws IOException {
-        return new StorageServer(ip, port, path);
+    public StorageServer createStorageServer(InetSocketAddress addr, byte path) throws IOException {
+        return new StorageServer(addr, path);
     }
 
-    public TrackerServer createTrackerServer(InetSocketAddress inetSockAddr) throws IOException {
-        return new TrackerServer(inetSockAddr);
+    public TrackerServer createTrackerServer(InetSocketAddress addr) throws IOException {
+        return new TrackerServer(addr);
     }
     
     public void close(){

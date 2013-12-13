@@ -10,7 +10,6 @@ package org.csource.fastdfs;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 /**
  * Tracker server group
