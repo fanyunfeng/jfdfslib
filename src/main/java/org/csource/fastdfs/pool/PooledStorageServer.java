@@ -3,11 +3,11 @@ package org.csource.fastdfs.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.csource.fastdfs.StorageServer;
+import org.csource.fastdfs.pool.PooledFdfsServerFactory.ServerPool;
 
 public class PooledStorageServer extends StorageServer implements PooledServer {
-    GenericObjectPool<PooledStorageServer> pool;
+    PooledFdfsServerFactory.ServerPool<PooledStorageServer> pool;
 
     public PooledStorageServer(InetSocketAddress address, byte store_path) throws IOException {
         super(address, store_path);
@@ -19,20 +19,20 @@ public class PooledStorageServer extends StorageServer implements PooledServer {
 
     @Override
     public void close() throws IOException {
-        pool.returnObject(this);
+        pool.returnObject(this.getInetSocketAddress(), this);
     }
 
     public void finalClose() throws IOException {
         super.close();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> void setPool(GenericObjectPool<T> pool) {
-        this.pool = (GenericObjectPool<PooledStorageServer>) pool;
-    }
-
     protected void finalize() throws Throwable {
         finalClose();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> void setPool(ServerPool<T> pool) {
+        this.pool = (PooledFdfsServerFactory.ServerPool<PooledStorageServer>) pool;
     }
 }

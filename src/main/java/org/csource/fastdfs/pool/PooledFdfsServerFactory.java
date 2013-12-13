@@ -3,15 +3,25 @@ package org.csource.fastdfs.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.apache.commons.pool2.KeyedPooledObjectFactory;
+import org.apache.commons.pool2.impl.GenericKeyedObjectPool;
+import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 import org.csource.common.Config;
 import org.csource.fastdfs.FdfsServerFactory;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerServer;
 
 public class PooledFdfsServerFactory extends FdfsServerFactory {
-    private ServerPool<PooledTrackerServer> trackerServers = new ServerPool<PooledTrackerServer>();
-    private ServerPool<PooledStorageServer> storageServers = new ServerPool<PooledStorageServer>();
+
+    static class ServerPool<T> extends GenericKeyedObjectPool<InetSocketAddress, T> {
+        public ServerPool(KeyedPooledObjectFactory<InetSocketAddress, T> factory,
+                GenericKeyedObjectPoolConfig poolConfig) {
+            super(factory, poolConfig);
+        }
+    }
+
+    private ServerPool<PooledTrackerServer> trackerServers;
+    private ServerPool<PooledStorageServer> storageServers;
 
     public PooledFdfsServerFactory(Config config) {
         initTrackerConfig(config);
@@ -19,12 +29,12 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     }
 
     private void initTrackerConfig(Config config) {
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        GenericKeyedObjectPoolConfig poolConfig = new GenericKeyedObjectPoolConfig();
 
-        poolConfig.setMaxTotal(config.getIntValue("pool.tracker.maxTotal", 10));
         poolConfig.setLifo(config.getBooleanValue("pool.tracker.lifo", true));
-        poolConfig.setMinIdle(config.getIntValue("pool.tracker.minIdle", 0));
-        poolConfig.setMaxIdle(config.getIntValue("pool.tracker.maxIdle", 4));
+        poolConfig.setMaxTotalPerKey(config.getIntValue("pool.tracker.maxTotal", 10));
+        poolConfig.setMinIdlePerKey(config.getIntValue("pool.tracker.minIdle", 0));
+        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.tracker.maxIdle", 4));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.minEvictableIdleTimeMillis",
                 60 * 1000));
@@ -32,23 +42,21 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis",
                 20 * 1000));
 
-        trackerServers.setConfig(poolConfig);
-        trackerServers.setFactory(new PooledServerFactory<PooledTrackerServer>() {
-
+        trackerServers = new ServerPool<PooledTrackerServer>(new PooledServerFactory<PooledTrackerServer>() {
             @Override
-            public PooledTrackerServer create() throws IOException {
-                return new PooledTrackerServer(this.getAddress());
+            public PooledTrackerServer create(InetSocketAddress address) throws IOException {
+                return new PooledTrackerServer(address);
             }
-        });
+        }, poolConfig);
     }
 
     private void initStorageConfig(Config config) {
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        GenericKeyedObjectPoolConfig poolConfig = new GenericKeyedObjectPoolConfig();
 
-        poolConfig.setMaxTotal(config.getIntValue("pool.storage.maxTotal", 20));
         poolConfig.setLifo(config.getBooleanValue("pool.storage.lifo", true));
-        poolConfig.setMinIdle(config.getIntValue("pool.storage.minIdle", 0));
-        poolConfig.setMaxIdle(config.getIntValue("pool.storage.maxIdle", 2));
+        poolConfig.setMaxTotalPerKey(config.getIntValue("pool.storage.maxTotal", 20));
+        poolConfig.setMinIdlePerKey(config.getIntValue("pool.storage.minIdle", 0));
+        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.storage.maxIdle", 2));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.minEvictableIdleTimeMillis",
                 60 * 1000));
@@ -56,14 +64,12 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.storage.timeBetweenEvictionRunsMillis",
                 20 * 1000));
 
-        storageServers.setConfig(poolConfig);
-        storageServers.setFactory(new PooledServerFactory<PooledStorageServer>() {
-
+        storageServers = new ServerPool<PooledStorageServer>(new PooledServerFactory<PooledStorageServer>() {
             @Override
-            public PooledStorageServer create() throws IOException {
-                return new PooledStorageServer(this.getAddress(), 0);
+            public PooledStorageServer create(InetSocketAddress address) throws IOException {
+                return new PooledStorageServer(address, 0);
             }
-        });
+        }, poolConfig);
     }
 
     public StorageServer createStorageServer(String ip, int port, int path) {
@@ -72,6 +78,9 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             StorageServer server = storageServers.borrowObject(address);
 
             server.setStorePathIndex(path);
+
+            PooledServer pooledServer = (PooledServer) server;
+            pooledServer.setPool(storageServers);
 
             return server;
         } catch (Exception e) {
@@ -86,6 +95,9 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
 
             server.setStorePathIndex(path);
 
+            PooledServer pooledServer = (PooledServer) server;
+            pooledServer.setPool(storageServers);
+
             return server;
         } catch (Exception e) {
             throw new PoolException(e);
@@ -97,6 +109,9 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             TrackerServer server;
 
             server = trackerServers.borrowObject(address);
+
+            PooledServer pooledServer = (PooledServer) server;
+            pooledServer.setPool(trackerServers);
 
             return server;
         } catch (Exception e) {

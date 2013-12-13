@@ -3,11 +3,11 @@ package org.csource.fastdfs.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.csource.fastdfs.TrackerServer;
+import org.csource.fastdfs.pool.PooledFdfsServerFactory.ServerPool;
 
 public class PooledTrackerServer extends TrackerServer implements PooledServer {
-    GenericObjectPool<PooledTrackerServer> pool;
+    PooledFdfsServerFactory.ServerPool<PooledTrackerServer> pool;
 
     public PooledTrackerServer(InetSocketAddress inetSockAddr) throws IOException {
         super(inetSockAddr);
@@ -15,20 +15,20 @@ public class PooledTrackerServer extends TrackerServer implements PooledServer {
 
     @Override
     public void close() throws IOException {
-        pool.returnObject(this);
+        pool.returnObject(this.getInetSocketAddress(), this);
     }
 
     public void finalClose() throws IOException {
         super.close();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> void setPool(GenericObjectPool<T> pool) {
-        this.pool = (GenericObjectPool<PooledTrackerServer>) pool;
-    }
-    
     protected void finalize() throws Throwable {
         finalClose();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> void setPool(ServerPool<T> pool) {
+        this.pool = (PooledFdfsServerFactory.ServerPool<PooledTrackerServer>) pool;
     }
 }

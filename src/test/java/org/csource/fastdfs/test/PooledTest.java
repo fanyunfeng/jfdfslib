@@ -9,6 +9,29 @@ import org.csource.fastdfs.TrackerServer;
 import org.csource.fastdfs.pool.PooledFdfsServerFactory;
 
 public class PooledTest {
+    private static void testTrackerConnect(String config, int times) {
+        long start = 0;
+
+        try {
+            start = System.currentTimeMillis();
+
+            ClientGlobal.init(config);
+
+            for (int c = 1; c <= times; c++) {
+                TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
+                trackerServer.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        long end = System.currentTimeMillis();
+
+        ClientGlobal.getFactory().close();
+
+        System.out.println("consume of connect:" + (end - start));
+    }
+
     private static void testWithPool(String config, String file, int times) {
         long start = 0;
 
@@ -18,11 +41,7 @@ public class PooledTest {
             ClientGlobal.init(config);
             ClientGlobal.setFactory(new PooledFdfsServerFactory(ClientGlobal.getConfig()));
 
-            // System.out.println("network_timeout=" +
-            // ClientGlobal.g_network_timeout + "ms");
-            // System.out.println("charset=" + ClientGlobal.g_charset);
-
-            for (int c = 0; c < times; c++) {
+            for (int c = 1; c <= times; c++) {
                 TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
                 TrackerClient tracker = new TrackerClient(trackerServer);
 
@@ -35,7 +54,7 @@ public class PooledTest {
                 System.out.println("upload success. file id is: " + fileId);
 
                 byte[] result = client.download_file1(fileId);
-                System.out.println("download result is: " + result.length);
+                System.out.println("test:" + c + " download result is: " + result.length);
 
                 trackerServer.close();
                 storageServer.close();
@@ -58,7 +77,7 @@ public class PooledTest {
             start = System.currentTimeMillis();
             ClientGlobal.init(config);
 
-            for (int c = 0; c < times; c++) {
+            for (int c = 1; c <= times; c++) {
                 TrackerServer trackerServer = ClientGlobal.getTrackerGroup().getTrackerServer();
                 TrackerClient tracker = new TrackerClient(trackerServer);
 
@@ -71,7 +90,7 @@ public class PooledTest {
                 System.out.println("upload success. file id is: " + fileId);
 
                 byte[] result = client.download_file1(fileId);
-                System.out.println("download result is: " + result.length);
+                System.out.println("test:" + c + " download result is: " + result.length);
 
                 trackerServer.close();
                 storageServer.close();
@@ -97,8 +116,13 @@ public class PooledTest {
         String config = args[0];
         String file = args[1];
 
-        testWithoutPool(config, file, 200);
+        testTrackerConnect(config, 100);
+        testTrackerConnect(config, 200);
+        testTrackerConnect(config, 500);
+        testTrackerConnect(config, 1000);
 
-        testWithPool(config, file, 200);
+        testWithoutPool(config, file, 100);
+
+        testWithPool(config, file, 100);
     }
 }
