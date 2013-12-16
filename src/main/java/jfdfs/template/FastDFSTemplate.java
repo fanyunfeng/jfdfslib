@@ -21,7 +21,8 @@ public class FastDFSTemplate {
 
             storageServer = tracker.getStoreStorage(groupName);
 
-            trackerServer.close();
+            closeTrackerServer(trackerServer);
+            trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
@@ -30,6 +31,7 @@ public class FastDFSTemplate {
             return o;
         } finally {
             closeTrackerServer(trackerServer);
+            closeStorageServer(storageServer);
         }
     }
 
@@ -53,7 +55,8 @@ public class FastDFSTemplate {
 
             storageServer = tracker.getFetchStorage(parts[0], parts[1]);
 
-            trackerServer.close();
+            closeTrackerServer(trackerServer);
+            trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
@@ -63,6 +66,7 @@ public class FastDFSTemplate {
 
         } finally {
             closeTrackerServer(trackerServer);
+            closeStorageServer(storageServer);
         }
     }
 
@@ -86,7 +90,8 @@ public class FastDFSTemplate {
 
             storageServer = tracker.getUpdateStorage(parts[0], parts[1]);
 
-            trackerServer.close();
+            closeTrackerServer(trackerServer);
+            trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
@@ -95,6 +100,7 @@ public class FastDFSTemplate {
             return o;
         } finally {
             closeTrackerServer(trackerServer);
+            closeStorageServer(storageServer);
         }
     }
 
@@ -102,6 +108,16 @@ public class FastDFSTemplate {
         try {
             if (trackerServer != null) {
                 trackerServer.close();
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
+    private static void closeStorageServer(StorageServer storageServer) {
+        try {
+            if (storageServer != null) {
+                storageServer.close();
             }
         } catch (IOException e) {
 
