@@ -38,10 +38,10 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setMaxIdlePerKey(config.getIntValue("pool.tracker.maxIdle", 4));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.minEvictableIdleTimeMillis",
-                60 * 1000));
+                20 * 1000));
         poolConfig.setTestWhileIdle(config.getBooleanValue("pool.tracker.testWhileIdle", true));
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis",
-                20 * 1000));
+                10 * 1000));
 
         trackerServers = new ServerPool<PooledTrackerServer>(new PooledServerFactory<PooledTrackerServer>() {
             @Override
@@ -60,10 +60,10 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         poolConfig.setMaxIdlePerKey(config.getIntValue("pool.storage.maxIdle", 2));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.minEvictableIdleTimeMillis",
-                60 * 1000));
+                20 * 1000));
         poolConfig.setTestWhileIdle(config.getBooleanValue("pool.storage.testWhileIdle", true));
         poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.storage.timeBetweenEvictionRunsMillis",
-                20 * 1000));
+                10 * 1000));
 
         storageServers = new ServerPool<PooledStorageServer>(new PooledServerFactory<PooledStorageServer>() {
             @Override
@@ -73,9 +73,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         }, poolConfig);
     }
 
-    public StorageServer createStorageServer(String ip, int port, int path) {
+    public StorageServer createStorageServer(InetSocketAddress address, int path) {
         try {
-            InetSocketAddress address = new InetSocketAddress(ip, port);
             StorageServer server = storageServers.borrowObject(address);
 
             server.setStorePathIndex(path);
@@ -89,9 +88,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         }
     }
 
-    public StorageServer createStorageServer(String ip, int port, byte path) {
+    public StorageServer createStorageServer(InetSocketAddress address, byte path) {
         try {
-            InetSocketAddress address = new InetSocketAddress(ip, port);
             StorageServer server = storageServers.borrowObject(address);
 
             server.setStorePathIndex(path);
