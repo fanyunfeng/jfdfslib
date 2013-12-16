@@ -9,11 +9,11 @@
 package jfdfs.test;
 
 import jfdfs.common.NameValuePair;
-import jfdfs.fastdfs.ClientGlobal;
-import jfdfs.fastdfs.StorageClient1;
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.TrackerClient;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.ClientGlobal;
+import jfdfs.core.StorageClient1;
+import jfdfs.core.StorageServer;
+import jfdfs.core.TrackerClient;
+import jfdfs.core.TrackerServer;
 
 
 /**

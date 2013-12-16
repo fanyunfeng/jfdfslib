@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import jfdfs.fastdfs.UploadCallback;
+import jfdfs.core.UploadCallback;
 
 
 /**

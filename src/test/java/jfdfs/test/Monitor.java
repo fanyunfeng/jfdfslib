@@ -10,12 +10,12 @@ package jfdfs.test;
 
 import java.text.SimpleDateFormat;
 
-import jfdfs.fastdfs.ClientGlobal;
-import jfdfs.fastdfs.ProtoCommon;
-import jfdfs.fastdfs.StructGroupStat;
-import jfdfs.fastdfs.StructStorageStat;
-import jfdfs.fastdfs.TrackerClient;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.ClientGlobal;
+import jfdfs.core.ProtoCommon;
+import jfdfs.core.StructGroupStat;
+import jfdfs.core.StructStorageStat;
+import jfdfs.core.TrackerClient;
+import jfdfs.core.TrackerServer;
 
 
 /**

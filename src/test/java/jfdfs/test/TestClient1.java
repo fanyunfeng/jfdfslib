@@ -13,13 +13,13 @@ import java.io.File;
 import java.net.InetSocketAddress;
 
 import jfdfs.common.NameValuePair;
-import jfdfs.fastdfs.ClientGlobal;
-import jfdfs.fastdfs.ProtoCommon;
-import jfdfs.fastdfs.ServerInfo;
-import jfdfs.fastdfs.StorageClient1;
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.TrackerClient;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.ClientGlobal;
+import jfdfs.core.ProtoCommon;
+import jfdfs.core.ServerInfo;
+import jfdfs.core.StorageClient1;
+import jfdfs.core.StorageServer;
+import jfdfs.core.TrackerClient;
+import jfdfs.core.TrackerServer;
 
 /**
  * client test

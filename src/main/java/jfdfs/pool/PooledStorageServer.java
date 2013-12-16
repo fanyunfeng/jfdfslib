@@ -1,10 +1,10 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.pool.PooledFdfsServerFactory.ServerPool;
+import jfdfs.core.StorageServer;
+import jfdfs.pool.PooledFdfsServerFactory.ServerPool;
 
 
 public class PooledStorageServer extends StorageServer implements PooledServer {

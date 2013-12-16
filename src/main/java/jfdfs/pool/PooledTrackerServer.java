@@ -1,10 +1,10 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import jfdfs.fastdfs.TrackerServer;
-import jfdfs.fastdfs.pool.PooledFdfsServerFactory.ServerPool;
+import jfdfs.core.TrackerServer;
+import jfdfs.pool.PooledFdfsServerFactory.ServerPool;
 
 
 public class PooledTrackerServer extends TrackerServer implements PooledServer {

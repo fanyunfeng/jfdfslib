@@ -11,7 +11,7 @@ package jfdfs.test;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import jfdfs.fastdfs.DownloadCallback;
+import jfdfs.core.DownloadCallback;
 
 
 /**

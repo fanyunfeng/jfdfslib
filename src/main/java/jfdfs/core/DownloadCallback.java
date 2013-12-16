@@ -6,7 +6,7 @@
  * Please visit the FastDFS Home Page http://www.csource.org/ for more detail.
  */
 
-package jfdfs.fastdfs;
+package jfdfs.core;
 
 /**
  * Download file callback interface

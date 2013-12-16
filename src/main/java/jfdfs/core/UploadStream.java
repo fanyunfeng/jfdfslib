@@ -1,10 +1,10 @@
-package jfdfs.fastdfs;
+package jfdfs.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 
-import jfdfs.fastdfs.UploadCallback;
+import jfdfs.core.UploadCallback;
 
 /**
  * Upload file by stream

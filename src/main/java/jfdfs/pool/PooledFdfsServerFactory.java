@@ -1,12 +1,12 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import jfdfs.common.Config;
-import jfdfs.fastdfs.FdfsServerFactory;
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.FdfsServerFactory;
+import jfdfs.core.StorageServer;
+import jfdfs.core.TrackerServer;
 
 import org.apache.commons.pool2.KeyedPooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPool;

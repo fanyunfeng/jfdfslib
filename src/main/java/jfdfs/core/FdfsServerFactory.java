@@ -1,4 +1,4 @@
-package jfdfs.fastdfs;
+package jfdfs.core;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -10,12 +10,12 @@ package jfdfs.test;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import jfdfs.fastdfs.ClientGlobal;
-import jfdfs.fastdfs.DownloadCallback;
-import jfdfs.fastdfs.StorageClient1;
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.TrackerClient;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.ClientGlobal;
+import jfdfs.core.DownloadCallback;
+import jfdfs.core.StorageClient1;
+import jfdfs.core.StorageServer;
+import jfdfs.core.TrackerClient;
+import jfdfs.core.TrackerServer;
 
 
 /**

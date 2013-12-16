@@ -1,4 +1,4 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 public class PoolException extends RuntimeException {
 

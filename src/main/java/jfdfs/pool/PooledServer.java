@@ -1,4 +1,4 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.Socket;

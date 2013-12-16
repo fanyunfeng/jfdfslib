@@ -1,9 +1,9 @@
-package jfdfs.fastdfs;
+package jfdfs.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import jfdfs.fastdfs.DownloadCallback;
+import jfdfs.core.DownloadCallback;
 
 /**
  * Download file by stream (download callback class)

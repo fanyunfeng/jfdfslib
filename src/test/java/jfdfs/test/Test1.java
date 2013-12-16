@@ -3,12 +3,12 @@ package jfdfs.test;
 import java.net.InetSocketAddress;
 
 import jfdfs.common.NameValuePair;
-import jfdfs.fastdfs.ClientGlobal;
-import jfdfs.fastdfs.StorageClient1;
-import jfdfs.fastdfs.StorageServer;
-import jfdfs.fastdfs.TrackerClient;
-import jfdfs.fastdfs.TrackerGroup;
-import jfdfs.fastdfs.TrackerServer;
+import jfdfs.core.ClientGlobal;
+import jfdfs.core.StorageClient1;
+import jfdfs.core.StorageServer;
+import jfdfs.core.TrackerClient;
+import jfdfs.core.TrackerGroup;
+import jfdfs.core.TrackerServer;
 
 
 public class Test1 {

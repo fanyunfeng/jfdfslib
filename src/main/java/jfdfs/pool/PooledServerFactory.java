@@ -1,10 +1,10 @@
-package jfdfs.fastdfs.pool;
+package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import jfdfs.fastdfs.ProtoCommon;
+import jfdfs.core.ProtoCommon;
 
 import org.apache.commons.pool2.KeyedPooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
