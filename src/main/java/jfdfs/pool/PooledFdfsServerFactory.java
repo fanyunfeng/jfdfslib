@@ -21,8 +21,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         }
     }
 
-    private ServerPool<PooledTrackerServer> trackerServers;
-    private ServerPool<PooledStorageServer> storageServers;
+    private ServerPool<PooledTrackerServer> trackerServers = null;
+    private ServerPool<PooledStorageServer> storageServers = null;
 
     public PooledFdfsServerFactory(Config config) {
         initTrackerConfig(config);
@@ -34,7 +34,7 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
 
         poolConfig.setLifo(config.getBooleanValue("pool.tracker.lifo", true));
         poolConfig.setMaxTotalPerKey(config.getIntValue("pool.tracker.maxTotal", 10));
-        poolConfig.setMinIdlePerKey(config.getIntValue("pool.tracker.minIdle", 0));
+        poolConfig.setMinIdlePerKey(config.getIntValue("pool.tracker.minIdle", 2));
         poolConfig.setMaxIdlePerKey(config.getIntValue("pool.tracker.maxIdle", 4));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.minEvictableIdleTimeMillis",
@@ -56,8 +56,8 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
 
         poolConfig.setLifo(config.getBooleanValue("pool.storage.lifo", true));
         poolConfig.setMaxTotalPerKey(config.getIntValue("pool.storage.maxTotal", 20));
-        poolConfig.setMinIdlePerKey(config.getIntValue("pool.storage.minIdle", 0));
-        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.storage.maxIdle", 2));
+        poolConfig.setMinIdlePerKey(config.getIntValue("pool.storage.minIdle", 2));
+        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.storage.maxIdle", 8));
         poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
         poolConfig.setMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.minEvictableIdleTimeMillis",
                 20 * 1000));
@@ -119,7 +119,14 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     }
 
     public void close() {
-        trackerServers.close();
-        storageServers.close();
+        if (trackerServers != null) {
+            trackerServers.close();
+            trackerServers = null;
+        }
+
+        if (storageServers != null) {
+            storageServers.close();
+            storageServers = null;
+        }
     }
 }
