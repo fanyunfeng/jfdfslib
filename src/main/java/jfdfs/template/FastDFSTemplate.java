@@ -8,6 +8,8 @@ import jfdfs.core.StorageClient1;
 import jfdfs.core.StorageServer;
 import jfdfs.core.TrackerClient;
 import jfdfs.core.TrackerServer;
+import jfdfs.pool.PooledStorageServer;
+import jfdfs.pool.PooledTrackerServer;
 
 public class FastDFSTemplate {
     public <T> T execFileUpload(String groupName, FastDFSCallback<T> op) throws MyException, IOException {
@@ -19,16 +21,36 @@ public class FastDFSTemplate {
 
             TrackerClient tracker = new TrackerClient(trackerServer);
 
-            storageServer = tracker.getStoreStorage(groupName);
+            try {
+                storageServer = tracker.getStoreStorage(groupName);
+            } catch (IOException e) {
+                if (trackerServer instanceof PooledTrackerServer) {
+                    PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
+
+                    tmp.finalClose();
+                    trackerServer = null;
+                }
+                throw e;
+            }
 
             closeTrackerServer(trackerServer);
             trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
-            T o = op.run(client);
+            try {
+                T o = op.run(client);
 
-            return o;
+                return o;
+            } catch (IOException e) {
+                if (storageServer instanceof PooledStorageServer) {
+                    PooledStorageServer tmp = (PooledStorageServer) storageServer;
+
+                    tmp.finalClose();
+                    storageServer = null;
+                }
+                throw e;
+            }
         } finally {
             closeTrackerServer(trackerServer);
             closeStorageServer(storageServer);
@@ -53,17 +75,35 @@ public class FastDFSTemplate {
                 }
             }
 
-            storageServer = tracker.getFetchStorage(parts[0], parts[1]);
+            try {
+                storageServer = tracker.getFetchStorage(parts[0], parts[1]);
+            } catch (IOException e) {
+                if (trackerServer instanceof PooledTrackerServer) {
+                    PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
 
+                    tmp.finalClose();
+                    trackerServer = null;
+                }
+                throw e;
+            }
             closeTrackerServer(trackerServer);
             trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
-            T o = op.run(client);
+            try {
+                T o = op.run(client);
 
-            return o;
+                return o;
+            } catch (IOException e) {
+                if (storageServer instanceof PooledStorageServer) {
+                    PooledStorageServer tmp = (PooledStorageServer) storageServer;
 
+                    tmp.finalClose();
+                    storageServer = null;
+                }
+                throw e;
+            }
         } finally {
             closeTrackerServer(trackerServer);
             closeStorageServer(storageServer);
@@ -88,16 +128,36 @@ public class FastDFSTemplate {
                 }
             }
 
-            storageServer = tracker.getUpdateStorage(parts[0], parts[1]);
+            try {
+                storageServer = tracker.getUpdateStorage(parts[0], parts[1]);
+            } catch (IOException e) {
+                if (trackerServer instanceof PooledTrackerServer) {
+                    PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
+
+                    tmp.finalClose();
+                    trackerServer = null;
+                }
+                throw e;
+            }
 
             closeTrackerServer(trackerServer);
             trackerServer = null;
 
             StorageClient1 client = new StorageClient1(storageServer);
 
-            T o = op.run(client);
+            try {
+                T o = op.run(client);
 
-            return o;
+                return o;
+            } catch (IOException e) {
+                if (storageServer instanceof PooledStorageServer) {
+                    PooledStorageServer tmp = (PooledStorageServer) storageServer;
+
+                    tmp.finalClose();
+                    storageServer = null;
+                }
+                throw e;
+            }
         } finally {
             closeTrackerServer(trackerServer);
             closeStorageServer(storageServer);
