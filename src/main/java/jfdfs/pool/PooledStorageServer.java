@@ -3,12 +3,15 @@ package jfdfs.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import jfdfs.core.StorageServer;
-import jfdfs.pool.PooledFdfsServerFactory.ServerPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import jfdfs.core.StorageServer;
 
 public class PooledStorageServer extends StorageServer implements PooledServer {
-    PooledFdfsServerFactory.ServerPool<PooledStorageServer> pool;
+    private static final Log log = LogFactory.getLog(PooledStorageServer.class);
+
+    private FdfsKeyedObjectPool<PooledStorageServer> pool;
 
     public PooledStorageServer(InetSocketAddress address, byte store_path) throws IOException {
         super(address, store_path);
@@ -33,7 +36,16 @@ public class PooledStorageServer extends StorageServer implements PooledServer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void setPool(ServerPool<T> pool) {
-        this.pool = (PooledFdfsServerFactory.ServerPool<PooledStorageServer>) pool;
+    public <T> void setPool(FdfsKeyedObjectPool<T> pool) {
+        this.pool = (FdfsKeyedObjectPool<PooledStorageServer>) pool;
+    }
+
+    @Override
+    public void closePooledObject() {
+        try {
+            pool.invalidateObject(getInetSocketAddress(), this);
+        } catch (Exception e) {
+            log.error("closePooledObject:", e);
+        }
     }
 }

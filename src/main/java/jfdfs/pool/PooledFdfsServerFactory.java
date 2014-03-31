@@ -10,84 +10,75 @@ import jfdfs.core.TrackerServer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.pool2.KeyedPooledObjectFactory;
-import org.apache.commons.pool2.impl.GenericKeyedObjectPool;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 
 public class PooledFdfsServerFactory extends FdfsServerFactory {
     private static final Log log = LogFactory.getLog(PooledFdfsServerFactory.class);
 
-    static class ServerPool<T> extends GenericKeyedObjectPool<InetSocketAddress, T> {
-        public ServerPool(KeyedPooledObjectFactory<InetSocketAddress, T> factory,
-                GenericKeyedObjectPoolConfig poolConfig) {
-            super(factory, poolConfig);
-        }
-    }
-
-    private ServerPool<PooledTrackerServer> trackerServers = null;
-    private ServerPool<PooledStorageServer> storageServers = null;
+    private FdfsKeyedObjectPool<PooledTrackerServer> trackerServers = null;
+    private FdfsKeyedObjectPool<PooledStorageServer> storageServers = null;
 
     public PooledFdfsServerFactory(Config config) {
         initTrackerConfig(config);
         initStorageConfig(config);
     }
 
-    private void initTrackerConfig(Config config) {
-        GenericKeyedObjectPoolConfig poolConfig = new GenericKeyedObjectPoolConfig();
+    private void initTrackerConfig(Config cf) {
+        GenericKeyedObjectPoolConfig pc = new GenericKeyedObjectPoolConfig();
 
-        poolConfig.setLifo(config.getBooleanValue("pool.tracker.lifo", true));
-        poolConfig.setMaxTotalPerKey(config.getIntValue("pool.tracker.maxTotal", 10));
-        poolConfig.setMinIdlePerKey(config.getIntValue("pool.tracker.minIdle", 2));
-        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.tracker.maxIdle", 4));
-        poolConfig.setMaxWaitMillis(config.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
-        poolConfig.setSoftMinEvictableIdleTimeMillis(config.getIntValue("pool.tracker.softMinEvictableIdleTimeMillis",
-                20 * 1000));
-        poolConfig.setTestWhileIdle(config.getBooleanValue("pool.tracker.testWhileIdle", true));
-        poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis",
-                10 * 1000));
+        pc.setLifo(cf.getBooleanValue("pool.tracker.lifo", true));
+        pc.setMaxTotalPerKey(cf.getIntValue("pool.tracker.maxTotal", 10));
+        pc.setMinIdlePerKey(cf.getIntValue("pool.tracker.minIdle", 2));
+        pc.setMaxIdlePerKey(cf.getIntValue("pool.tracker.maxIdle", 4));
+        pc.setMaxWaitMillis(cf.getIntValue("pool.tracker.maxWaitMillis", 10 * 1000));
+        pc.setSoftMinEvictableIdleTimeMillis(cf.getIntValue("pool.tracker.softMinEvictableIdleTimeMillis",
+                1000 * 60 * 2));
+        pc.setTestWhileIdle(cf.getBooleanValue("pool.tracker.testWhileIdle", true));
+        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis", 1000 * 60));
+        pc.setMinEvictableIdleTimeMillis(cf.getIntValue("pool.tracker.minEvictableIdleTimeMillis", 1000 * 60 * 5));
 
-        trackerServers = new ServerPool<PooledTrackerServer>(new PooledServerFactory<PooledTrackerServer>() {
+        trackerServers = new FdfsKeyedObjectPool<PooledTrackerServer>(new PooledServerFactory<PooledTrackerServer>() {
             @Override
             public PooledTrackerServer create(InetSocketAddress address) throws IOException {
 
                 PooledTrackerServer srv = new PooledTrackerServer(address);
-                
+
                 if (log.isDebugEnabled()) {
-                    log.debug(String.format("create tracker server:%s address:%X",address.toString(), srv.hashCode()));
+                    log.debug(String.format("create tracker server:%s address:%X", address.toString(), srv.hashCode()));
                 }
-                
+
                 return srv;
             }
-        }, poolConfig);
+        }, pc);
     }
 
-    private void initStorageConfig(Config config) {
-        GenericKeyedObjectPoolConfig poolConfig = new GenericKeyedObjectPoolConfig();
+    private void initStorageConfig(Config cf) {
+        GenericKeyedObjectPoolConfig pc = new GenericKeyedObjectPoolConfig();
 
-        poolConfig.setLifo(config.getBooleanValue("pool.storage.lifo", true));
-        poolConfig.setMaxTotalPerKey(config.getIntValue("pool.storage.maxTotal", 20));
-        poolConfig.setMinIdlePerKey(config.getIntValue("pool.storage.minIdle", 2));
-        poolConfig.setMaxIdlePerKey(config.getIntValue("pool.storage.maxIdle", 8));
-        poolConfig.setMaxWaitMillis(config.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
-        poolConfig.setSoftMinEvictableIdleTimeMillis(config.getIntValue("pool.storage.softMinEvictableIdleTimeMillis",
-                20 * 1000));
-        poolConfig.setTestWhileIdle(config.getBooleanValue("pool.storage.testWhileIdle", true));
-        poolConfig.setTimeBetweenEvictionRunsMillis(config.getIntValue("pool.storage.timeBetweenEvictionRunsMillis",
-                10 * 1000));
+        pc.setLifo(cf.getBooleanValue("pool.storage.lifo", true));
+        pc.setMaxTotalPerKey(cf.getIntValue("pool.storage.maxTotal", 20));
+        pc.setMinIdlePerKey(cf.getIntValue("pool.storage.minIdle", 2));
+        pc.setMaxIdlePerKey(cf.getIntValue("pool.storage.maxIdle", 8));
+        pc.setMaxWaitMillis(cf.getIntValue("pool.storage.maxWaitMillis", 10 * 1000));
+        pc.setSoftMinEvictableIdleTimeMillis(cf.getIntValue("pool.storage.softMinEvictableIdleTimeMillis",
+                1000 * 60 * 2));
+        pc.setTestWhileIdle(cf.getBooleanValue("pool.storage.testWhileIdle", true));
+        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.storage.timeBetweenEvictionRunsMillis", 1000 * 60));
+        pc.setMinEvictableIdleTimeMillis(cf.getIntValue("pool.storage.minEvictableIdleTimeMillis", 1000 * 60 * 3));
 
-        storageServers = new ServerPool<PooledStorageServer>(new PooledServerFactory<PooledStorageServer>() {
+        storageServers = new FdfsKeyedObjectPool<PooledStorageServer>(new PooledServerFactory<PooledStorageServer>() {
             @Override
             public PooledStorageServer create(InetSocketAddress address) throws IOException {
-                
+
                 PooledStorageServer srv = new PooledStorageServer(address, 0);
-                
+
                 if (log.isDebugEnabled()) {
-                    log.debug(String.format("create storge server:%s address:%X",address.toString(), srv.hashCode()));
+                    log.debug(String.format("create storge server:%s address:%X", address.toString(), srv.hashCode()));
                 }
-                
+
                 return srv;
             }
-        }, poolConfig);
+        }, pc);
     }
 
     public StorageServer createStorageServer(InetSocketAddress address, int path) {

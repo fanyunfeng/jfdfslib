@@ -3,15 +3,18 @@ package jfdfs.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import jfdfs.core.TrackerServer;
-import jfdfs.pool.PooledFdfsServerFactory.ServerPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import jfdfs.core.TrackerServer;
 
 public class PooledTrackerServer extends TrackerServer implements PooledServer {
-    PooledFdfsServerFactory.ServerPool<PooledTrackerServer> pool;
+    private static final Log log = LogFactory.getLog(PooledTrackerServer.class);
 
-    public PooledTrackerServer(InetSocketAddress inetSockAddr) throws IOException {
-        super(inetSockAddr);
+    private FdfsKeyedObjectPool<PooledTrackerServer> pool;
+
+    public PooledTrackerServer(InetSocketAddress address) throws IOException {
+        super(address);
     }
 
     @Override
@@ -29,7 +32,16 @@ public class PooledTrackerServer extends TrackerServer implements PooledServer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void setPool(ServerPool<T> pool) {
-        this.pool = (PooledFdfsServerFactory.ServerPool<PooledTrackerServer>) pool;
+    public <T> void setPool(FdfsKeyedObjectPool<T> pool) {
+        this.pool = (FdfsKeyedObjectPool<PooledTrackerServer>) pool;
+    }
+
+    @Override
+    public void closePooledObject() {
+        try {
+            pool.invalidateObject(getInetSocketAddress(), this);
+        } catch (Exception e) {
+            log.error("closePooledObject:", e);
+        }
     }
 }

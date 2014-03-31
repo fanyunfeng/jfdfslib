@@ -27,7 +27,7 @@ public class FastDFSTemplate {
                 if (trackerServer instanceof PooledTrackerServer) {
                     PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     trackerServer = null;
                 }
                 throw e;
@@ -46,7 +46,7 @@ public class FastDFSTemplate {
                 if (storageServer instanceof PooledStorageServer) {
                     PooledStorageServer tmp = (PooledStorageServer) storageServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     storageServer = null;
                 }
                 throw e;
@@ -81,7 +81,7 @@ public class FastDFSTemplate {
                 if (trackerServer instanceof PooledTrackerServer) {
                     PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     trackerServer = null;
                 }
                 throw e;
@@ -99,7 +99,7 @@ public class FastDFSTemplate {
                 if (storageServer instanceof PooledStorageServer) {
                     PooledStorageServer tmp = (PooledStorageServer) storageServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     storageServer = null;
                 }
                 throw e;
@@ -134,7 +134,7 @@ public class FastDFSTemplate {
                 if (trackerServer instanceof PooledTrackerServer) {
                     PooledTrackerServer tmp = (PooledTrackerServer) trackerServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     trackerServer = null;
                 }
                 throw e;
@@ -153,7 +153,7 @@ public class FastDFSTemplate {
                 if (storageServer instanceof PooledStorageServer) {
                     PooledStorageServer tmp = (PooledStorageServer) storageServer;
 
-                    tmp.finalClose();
+                    tmp.closePooledObject();
                     storageServer = null;
                 }
                 throw e;
