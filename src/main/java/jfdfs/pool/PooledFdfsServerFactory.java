@@ -34,7 +34,7 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         pc.setSoftMinEvictableIdleTimeMillis(cf.getIntValue("pool.tracker.softMinEvictableIdleTimeMillis",
                 1000 * 60 * 2));
         pc.setTestWhileIdle(cf.getBooleanValue("pool.tracker.testWhileIdle", true));
-        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis", 1000 * 60));
+        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.tracker.timeBetweenEvictionRunsMillis", 1000 * 12));
         pc.setMinEvictableIdleTimeMillis(cf.getIntValue("pool.tracker.minEvictableIdleTimeMillis", 1000 * 60 * 5));
 
         trackerServers = new FdfsKeyedObjectPool<PooledTrackerServer>(new PooledServerFactory<PooledTrackerServer>() {
@@ -63,7 +63,7 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
         pc.setSoftMinEvictableIdleTimeMillis(cf.getIntValue("pool.storage.softMinEvictableIdleTimeMillis",
                 1000 * 60 * 2));
         pc.setTestWhileIdle(cf.getBooleanValue("pool.storage.testWhileIdle", true));
-        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.storage.timeBetweenEvictionRunsMillis", 1000 * 60));
+        pc.setTimeBetweenEvictionRunsMillis(cf.getIntValue("pool.storage.timeBetweenEvictionRunsMillis", 1000 * 12));
         pc.setMinEvictableIdleTimeMillis(cf.getIntValue("pool.storage.minEvictableIdleTimeMillis", 1000 * 60 * 3));
 
         storageServers = new FdfsKeyedObjectPool<PooledStorageServer>(new PooledServerFactory<PooledStorageServer>() {
