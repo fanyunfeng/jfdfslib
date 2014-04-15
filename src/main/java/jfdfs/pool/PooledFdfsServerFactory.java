@@ -2,6 +2,9 @@ package jfdfs.pool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import jfdfs.common.Config;
 import jfdfs.core.FdfsServerFactory;
@@ -10,6 +13,7 @@ import jfdfs.core.TrackerServer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool2.impl.DefaultPooledObjectInfo;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 
 public class PooledFdfsServerFactory extends FdfsServerFactory {
@@ -21,6 +25,19 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
     public PooledFdfsServerFactory(Config config) {
         initTrackerConfig(config);
         initStorageConfig(config);
+    }
+
+    private void dumpPool(Map<String, List<DefaultPooledObjectInfo>> list) {
+        for (Map.Entry<String, List<DefaultPooledObjectInfo>> i : list.entrySet()) {
+
+            log.error("pool:" + i.getKey().toString());
+
+            List<DefaultPooledObjectInfo> x = i.getValue();
+
+            for (DefaultPooledObjectInfo xx : x) {
+                log.error("\tinstance:" + xx.getPooledObjectToString());
+            }
+        }
     }
 
     private void initTrackerConfig(Config cf) {
@@ -91,6 +108,12 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             pooledServer.setPool(storageServers);
 
             return server;
+        } catch (NoSuchElementException e) {
+            Map<String, List<DefaultPooledObjectInfo>> list = storageServers.listAllObjects();
+
+            dumpPool(list);
+
+            throw new PoolException(e);
         } catch (Exception e) {
             throw new PoolException(e);
         }
@@ -106,6 +129,12 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             pooledServer.setPool(storageServers);
 
             return server;
+        } catch (NoSuchElementException e) {
+            Map<String, List<DefaultPooledObjectInfo>> list = storageServers.listAllObjects();
+
+            dumpPool(list);
+
+            throw new PoolException(e);
         } catch (Exception e) {
             throw new PoolException(e);
         }
@@ -121,6 +150,12 @@ public class PooledFdfsServerFactory extends FdfsServerFactory {
             pooledServer.setPool(trackerServers);
 
             return server;
+        } catch (NoSuchElementException e) {
+            Map<String, List<DefaultPooledObjectInfo>> list = storageServers.listAllObjects();
+
+            dumpPool(list);
+
+            throw new PoolException(e);
         } catch (Exception e) {
             throw new PoolException(e);
         }
